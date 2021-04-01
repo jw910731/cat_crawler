@@ -8,7 +8,7 @@ make
 ```
 Just that simple.
 
-# The usage
+# Usage
 ```
 ./crawler.out
 ```
