@@ -41,7 +41,9 @@ int create_connect(const char *host, const char *service, int family,
     hint.ai_socktype = sock_type;
     hint.ai_protocol = protocol;
     hint.ai_flags = flag;
-    getaddrinfo(host, service, &hint, &result);
+    if (getaddrinfo(host, service, &hint, &result)) { // if resolve failed
+        return -1;
+    }
     for (struct addrinfo *it = result; it != NULL; it = it->ai_next) {
         int sfd = socket(it->ai_family, it->ai_socktype, it->ai_protocol);
         if (sfd == -1)

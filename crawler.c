@@ -36,14 +36,6 @@ char *strtoken(char *s, const char *delim) {
 
 int main() {
     SSL_library_init();
-    // setup SSL Context
-    SSL_CTX *ctx = initCtx();
-    if (ctx == NULL) {
-        fprintf(stderr, "initCtx():");
-        ERR_print_errors_fp(stderr);
-        return EXIT_FAILURE;
-    }
-
     // prepare socket fd
     int sock_fd = create_connect(target, "https", AF_INET, 0, 0, 0);
     if (sock_fd == -1) {
@@ -61,6 +53,13 @@ int main() {
                sizeof(struct timeval));
 
     // prepare SSL tunnel
+    SSL_CTX *ctx = initCtx();
+    if (ctx == NULL) {
+        fprintf(stderr, "initCtx():");
+        ERR_print_errors_fp(stderr);
+        return EXIT_FAILURE;
+    }
+
     SSL_CTX_set_mode(ctx, SSL_MODE_AUTO_RETRY);
     SSL *ssl = SSL_new(ctx);
     SSL_set_fd(ssl, sock_fd);
